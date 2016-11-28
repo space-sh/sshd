@@ -1,0 +1,6 @@
+.*.cache
+space_modules
+authorized_keys
+ssh_host_rsa_key
+ssh_host_rsa_key.pub
+sshd_config

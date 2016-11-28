@@ -1,0 +1,30 @@
+@clone: ssh
+
+_dep_install:
+    _info:
+        title: Check for dependencies.
+        desc: |
+            This will installl openssh-server if not installed.
+    _env:
+        - CMD: SSHD_DEP_INSTALL
+
+genkey:
+    _info:
+        title: Generate a server key.
+    _env:
+        - sshhostkeyfile: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
+        - CMD: SSHD_GENKEY -- ${sshhostkeyfile}
+
+run:
+    _info:
+        title: Run a local SSHD server.
+        desc: |
+            Copy your pub key into the 'authorized_keys' file
+            to be able to connect to the server.
+
+    _env:
+        - port: ${port-2222}
+        - sshhostkeyfile: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
+        - authorizedkeys: ${authorizedkeys:-$PWD/authorized_keys}
+        - sshdconfigtemplate: ${sshdconfigtemplate:-@{DIR}/sshd_config_template}
+        - CMD: SSHD_RUN ${sshhostkeyfile} ${port} ${authorizedkeys} ${sshdconfigtemplate}
