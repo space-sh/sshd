@@ -36,8 +36,8 @@ SSHD_DEP_INSTALL ()
 
     PRINT "Checking for OS dependencies." "info"
 
-    OS_IS_INSTALLED "sshd" "openssh"
-    OS_IS_INSTALLED "ssh-keygen" "openssh"
+    OS_IS_INSTALLED "sshd" "openssh-server"
+    OS_IS_INSTALLED "ssh-keygen" "openssh-server"
 
     if [ "$?" -eq 0 ]; then
         PRINT "Dependencies found." "success"
