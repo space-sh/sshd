@@ -16,6 +16,16 @@
 
 clone os file
 
+#=====================
+# SSHD_DEP_INSTALL
+#
+# Check dependencies for this module.
+#
+# Returns:
+#   0: dependencies were found
+#   1: failed to find dependencies
+#
+#=====================
 SSHD_DEP_INSTALL ()
 {
     SPACE_CMDDEP="OS_IS_INSTALLED PRINT"
@@ -33,6 +43,18 @@ SSHD_DEP_INSTALL ()
     fi
 }
 
+#=====================
+# SSHD_GENKEY
+#
+# Generate server key
+#
+# Parameters:
+#   $1: host file
+#
+# Returns:
+#   Non-zero on failure.
+#
+#=====================
 SSHD_GENKEY ()
 {
     SPACE_SIGNATURE="sshhostkeyfile"
@@ -46,6 +68,21 @@ SSHD_GENKEY ()
     ssh-keygen -f "${sshhostkeyfile}"
 }
 
+#=====================
+# SSHD_RUN
+#
+# Run ssh server
+#
+# Parameters:
+#   $1: host key file
+#   $2: port number
+#   $3: authorized key file
+#   $4: configuration template file
+#
+# Returns:
+#   Non-zero on failure.
+#
+#=====================
 SSHD_RUN ()
 {
     SPACE_SIGNATURE="sshhostkeyfile port authorizedkeys configemplate"
@@ -71,5 +108,5 @@ SSHD_RUN ()
     sed "s/AUTHORIZED_KEYS_DIR/${authorizedkeys}/g" "${configtemplate}" > "${sshdconfig}" || return 1
 
     $(which sshd) -h "${sshhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
-
 }
+

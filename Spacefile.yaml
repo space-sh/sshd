@@ -20,13 +20,18 @@ _dep_install:
     _info:
         title: Check for dependencies.
         desc: |
-            This will installl openssh-server if not installed.
+            This will install openssh-server if not installed.
     _env:
         - CMD: SSHD_DEP_INSTALL
 
+_info:
+        title: SSHD module
+        desc: |
+            Handles ssh daemon (server).
+
 genkey:
     _info:
-        title: Generate a server key.
+        title: Generate a server key
     _env:
         - sshhostkeyfile: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
         - CMD: SSHD_GENKEY -- ${sshhostkeyfile}
@@ -44,3 +49,4 @@ run:
         - authorizedkeys: ${authorizedkeys:-$PWD/authorized_keys}
         - sshdconfigtemplate: ${sshdconfigtemplate:-@{DIR}/sshd_config_template}
         - CMD: SSHD_RUN ${sshhostkeyfile} ${port} ${authorizedkeys} ${sshdconfigtemplate}
+
