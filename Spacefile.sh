@@ -32,7 +32,7 @@ clone os file
 #=====================
 SSHD_DEP_INSTALL ()
 {
-    SPACE_CMDDEP="OS_IS_INSTALLED PRINT"        # shellcheck disable=SC2034
+    SPACE_DEP="OS_IS_INSTALLED PRINT"       # shellcheck disable=SC2034
 
     PRINT "Checking for OS dependencies." "info"
 
@@ -59,7 +59,7 @@ SSHD_DEP_INSTALL ()
 SSHD_GENKEY ()
 {
     SPACE_SIGNATURE="sshhostkeyfile"
-    SPACE_CMDDEP="PRINT"                # shellcheck disable=SC2034
+    SPACE_DEP="PRINT"               # shellcheck disable=SC2034
 
     local sshhostkeyfile="${1}"
     shift
@@ -88,8 +88,8 @@ SSHD_RUN ()
 {
     # shellcheck disable=SC2034
     SPACE_SIGNATURE="sshhostkeyfile port authorizedkeys configemplate"
-    SPACE_CMDENV="CWD"      # shellcheck disable=SC2034
-    SPACE_CMDDEP="PRINT"    # shellcheck disable=SC2034
+    SPACE_ENV="CWD"         # shellcheck disable=SC2034
+    SPACE_DEP="PRINT"       # shellcheck disable=SC2034
 
     local sshhostkeyfile="${1}"
     shift
