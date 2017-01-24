@@ -39,12 +39,12 @@ _platforms:
 _tests:
     -
         -
-            @include: @{DIR}/../Spacefile.yaml|/_dep_install
+            @include: @{DIR}/../Spacefile.yaml|/_dep_install/
         -
             _env:
                 - sshhostkeyfile: /tmp/ssh_host_rsa_key
                 - SPACE_REDIR: "</dev/null"
-            @include: @{DIR}/../Spacefile.yaml|/genkey
+            @include: @{DIR}/../Spacefile.yaml|/genkey/
             _info:
                 title: Test generating a new server key
 
