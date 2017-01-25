@@ -14,9 +14,6 @@
 # limitations under the License.
 #
 
-clone os file
-
-
 # Disable warning about indirectly checking status code
 # shellcheck disable=SC2181
 
@@ -30,7 +27,7 @@ clone os file
 #   1: failed to find dependencies
 #
 #=====================
-SSHD_DEP_INSTALL ()
+SSHD_DEP_INSTALL()
 {
     SPACE_DEP="OS_IS_INSTALLED PRINT"       # shellcheck disable=SC2034
 
@@ -56,7 +53,7 @@ SSHD_DEP_INSTALL ()
 #   Non-zero on failure.
 #
 #=====================
-SSHD_GENKEY ()
+SSHD_GENKEY()
 {
     SPACE_SIGNATURE="sshhostkeyfile"
     SPACE_DEP="PRINT"               # shellcheck disable=SC2034
@@ -84,7 +81,7 @@ SSHD_GENKEY ()
 #   Non-zero on failure.
 #
 #=====================
-SSHD_RUN ()
+SSHD_RUN()
 {
     # shellcheck disable=SC2034
     SPACE_SIGNATURE="sshhostkeyfile port authorizedkeys configemplate"
@@ -111,4 +108,3 @@ SSHD_RUN ()
 
     $(which sshd) -h "${sshhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
 }
-

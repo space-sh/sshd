@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-@clone: ssh
+---
+@clone: ssh os file
 
 _dep_install:
     _info:
@@ -49,3 +49,4 @@ run:
         - authorizedkeys: ${authorizedkeys:-$PWD/authorized_keys}
         - sshdconfigtemplate: ${sshdconfigtemplate:-@{DIR}/sshd_config_template}
         - RUN: SSHD_RUN ${sshhostkeyfile} ${port} ${authorizedkeys} ${sshdconfigtemplate}
+...
