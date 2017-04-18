@@ -15,6 +15,10 @@
 #
 ---
 @clone: ssh os file
+    @include: ssh|/_clone/
+    @include: os|/_clone/
+    @include: file|/_clone/
+@include: |/_clone/
 
 _dep_install:
     _info:
@@ -33,8 +37,19 @@ genkey:
     _info:
         title: Generate a server key
     _env:
-        - sshhostkeyfile: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
-        - RUN: SSHD_GENKEY -- ${sshhostkeyfile}
+        - sshhostkeyfile:
+            title: SSH host key file target
+            value: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
+            values:
+                - ssh_host_rsa_key
+        - SPACE_ARGS:
+            arguments:
+                -
+                    title: SSH host key file target
+                    values:
+                        - ssh_host_rsa_key
+
+        - RUN: SSHD_GENKEY -- "${sshhostkeyfile}"
 
 run:
     _info:
@@ -44,9 +59,52 @@ run:
             to be able to connect to the server.
 
     _env:
-        - port: ${port-2222}
-        - sshhostkeyfile: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
-        - authorizedkeys: ${authorizedkeys:-$PWD/authorized_keys}
-        - sshdconfigtemplate: ${sshdconfigtemplate:-@{DIR}/sshd_config_template}
-        - RUN: SSHD_RUN ${sshhostkeyfile} ${port} ${authorizedkeys} ${sshdconfigtemplate}
+        - sshhostkeyfile:
+            title: SSH host key file
+            value: ${sshhostkeyfile:-$PWD/ssh_host_rsa_key}
+            values:
+                - ssh_host_rsa_key
+        - port:
+            title: Server port
+            value: ${port-2222}
+            values:
+                - 2222
+        - authorizedkeys:
+            title: Authorized keys file
+            value: ${authorizedkeys:-$PWD/authorized_keys}
+            values:
+                - authorized_keys
+        - sshdconfigtemplate:
+            title: SSHD config template file
+            value: ${sshdconfigtemplate:-@{DIR}/sshd_config_template}
+            values:
+                - sshd_config_template
+        - SPACE_ARGS:
+            arguments:
+                -
+                    title: SSH host key file
+                    values:
+                        - ssh_host_rsa_key
+                -
+                    title: Server port
+                    values:
+                        - 2222
+                -
+                    title: Authorized keys file
+                    values:
+                        - authorized_keys
+                -
+                    title: SSHD config template file
+                    values:
+                        - sshd_config_template
+        - RUN: SSHD_RUN -- "${sshhostkeyfile}" "${port}" "${authorizedkeys}" "${sshdconfigtemplate}"
+
+config:
+    _info:
+        title: Configure SSHD
+        desc: |
+            Make sure that SSHD is properly configured
+            to be using an authorized_keys file.
+    _env:
+        - RUN: SSHD_CONFIG
 ...

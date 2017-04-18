@@ -55,7 +55,7 @@ SSHD_DEP_INSTALL()
 #=====================
 SSHD_GENKEY()
 {
-    SPACE_SIGNATURE="sshhostkeyfile"
+    SPACE_SIGNATURE="sshhostkeyfile:1"
     SPACE_DEP="PRINT"               # shellcheck disable=SC2034
 
     local sshhostkeyfile="${1}"
@@ -84,7 +84,7 @@ SSHD_GENKEY()
 SSHD_RUN()
 {
     # shellcheck disable=SC2034
-    SPACE_SIGNATURE="sshhostkeyfile port authorizedkeys configemplate"
+    SPACE_SIGNATURE="sshhostkeyfile:1 port:1 authorizedkeys:1 configemplate:1"
     SPACE_ENV="CWD"         # shellcheck disable=SC2034
     SPACE_DEP="PRINT"       # shellcheck disable=SC2034
 
@@ -107,4 +107,41 @@ SSHD_RUN()
     sed "s/AUTHORIZED_KEYS_DIR/${authorizedkeys}/g" "${configtemplate}" > "${sshdconfig}" || return 1
 
     $(which sshd) -h "${sshhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
+}
+
+#=======================
+# SSHD_CONFIG
+#
+# Configure the SSHD of the OS so that authorized_keys file is used.
+#
+# Expects:
+#   $SUDO: if not run as root set SUDO=sudo
+#
+# Returns:
+#   0: success
+#   2: file does not exist
+#
+#=======================
+SSHD_CONFIG()
+{
+    SPACE_DEP="PRINT FILE_ROW_PERSIST"   # shellcheck disable=SC2034
+    SPACE_ENV="SUDO=${SUDO-}"            # shellcheck disable=SC2034
+
+    local file="/etc/ssh/sshd_config"
+    local row="AuthorizedKeysFile %h\/.ssh\/authorized_keys"
+
+    PRINT "modify ${file}." "debug"
+
+    local SUDO="${SUDO-}"
+    FILE_ROW_PERSIST "${row}" "${file}"
+    local status="$?"
+    if [ "${status}" -eq 2 ]; then
+        PRINT "File does not exist." "debug"
+        return 2
+    fi
+
+    # This is for port forwarding, which could be used with -g switch.
+    # But is insecure to just allow.
+    #row="GatewayPorts yes"
+    #FILE_ROW_PERSIST "${row}" "${file}"
 }

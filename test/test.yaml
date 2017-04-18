@@ -48,6 +48,11 @@ _tests:
             @include: @{DIR}/../Spacefile.yaml|/genkey/
             _info:
                 title: Test generating a new server key
+        -
+            _env:
+            @include: @{DIR}/../Spacefile.yaml|/config/
+            _info:
+                title: Configure sshd_config
 
 _clean:
     _info:
