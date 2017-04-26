@@ -6,7 +6,7 @@ weight: 200
 ---
 # SSHD module: Generate key
 
-Generate a server key.
+Generate a new server key.
 
 
 ## Example
