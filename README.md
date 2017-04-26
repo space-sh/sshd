@@ -4,6 +4,14 @@ Handles ssh daemon (server).
 
 
 
+## /config/
+	Configure SSHD
+
+	Make sure that SSHD is properly configured
+	to be using an authorized_keys file.
+	
+
+
 ## /genkey/
 	Generate a server key
 
@@ -58,6 +66,21 @@ Run ssh server
   
 ### Returns:  
 - Non-zero on failure.  
+  
+  
+  
+## SSHD\_CONFIG()  
+  
+  
+  
+Configure the SSHD of the OS so that authorized\_keys file is used.  
+  
+### Expects:  
+- $SUDO: if not run as root set SUDOsudo  
+  
+### Returns:  
+- 0: success  
+- 2: file does not exist  
   
   
   
