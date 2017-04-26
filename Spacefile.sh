@@ -41,6 +41,10 @@ SSHD_DEP_INSTALL()
     fi
 }
 
+
+# Disable warning about local keyword
+# shellcheck disable=SC2039
+
 #=====================
 # SSHD_GENKEY
 #
@@ -65,6 +69,10 @@ SSHD_GENKEY()
 
     ssh-keygen -f "${sshhostkeyfile}"
 }
+
+
+# Disable warning about local keyword
+# shellcheck disable=SC2039
 
 #=====================
 # SSHD_RUN
@@ -108,6 +116,10 @@ SSHD_RUN()
 
     $(which sshd) -h "${sshhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
 }
+
+
+# Disable warning about local keyword
+# shellcheck disable=SC2039
 
 #=======================
 # SSHD_CONFIG
