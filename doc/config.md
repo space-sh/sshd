@@ -1,7 +1,7 @@
 ---
 modulename: SSH
 title: /config/
-giturl: gitlab.com/space-sh/ssh
+giturl: gitlab.com/space-sh/sshd
 editurl: /edit/master/doc/config.md
 weight: 200
 ---
