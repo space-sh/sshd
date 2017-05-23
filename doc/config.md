@@ -2,6 +2,7 @@
 modulename: SSH
 title: /config/
 giturl: gitlab.com/space-sh/ssh
+editurl: /edit/master/doc/config.md
 weight: 200
 ---
 # SSH module: Configure SSH daemon

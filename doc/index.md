@@ -2,6 +2,7 @@
 modulename: SSHD
 title: Overview
 giturl: gitlab.com/space-sh/sshd
+editurl: /edit/master/doc/index.md
 weight: 100
 ---
 # SSHD module

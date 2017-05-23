@@ -2,6 +2,7 @@
 modulename: SSHD
 title: /genkey/
 giturl: gitlab.com/space-sh/sshd
+editurl: /edit/master/doc/genkey.md
 weight: 200
 ---
 # SSHD module: Generate key

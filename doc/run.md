@@ -2,6 +2,7 @@
 modulename: SSHD
 title: /run/
 giturl: gitlab.com/space-sh/sshd
+editurl: /edit/master/doc/run.md
 weight: 200
 ---
 # SSHD module: Run
