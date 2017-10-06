@@ -75,9 +75,6 @@ Run ssh server
   
 Configure the SSHD of the OS so that authorized\_keys file is used.  
   
-### Expects:  
-- $SUDO: if not run as root set SUDOsudo  
-  
 ### Returns:  
 - 0: success  
 - 2: file does not exist  
