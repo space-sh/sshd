@@ -126,9 +126,6 @@ SSHD_RUN()
 #
 # Configure the SSHD of the OS so that authorized_keys file is used.
 #
-# Expects:
-#   $SUDO: if not run as root set SUDO=sudo
-#
 # Returns:
 #   0: success
 #   2: file does not exist
@@ -137,14 +134,12 @@ SSHD_RUN()
 SSHD_CONFIG()
 {
     SPACE_DEP="PRINT FILE_ROW_PERSIST"   # shellcheck disable=SC2034
-    SPACE_ENV="SUDO=${SUDO-}"            # shellcheck disable=SC2034
 
     local file="/etc/ssh/sshd_config"
     local row="AuthorizedKeysFile %h\/.ssh\/authorized_keys"
 
     PRINT "modify ${file}." "debug"
 
-    local SUDO="${SUDO-}"
     FILE_ROW_PERSIST "${row}" "${file}"
     local status="$?"
     if [ "${status}" -eq 2 ]; then
