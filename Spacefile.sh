@@ -41,35 +41,57 @@ SSHD_DEP_INSTALL()
     fi
 }
 
-
 # Disable warning about local keyword
 # shellcheck disable=SC2039
 
-#=====================
-# SSHD_GENKEY
+#=======================
+# SSHD_CONFIG
 #
-# Generate server key
-#
-# Parameters:
-#   $1: host file
+# Configure the SSHD user config files
 #
 # Returns:
-#   Non-zero on failure.
+#   0: success
+#   1: error
 #
-#=====================
-SSHD_GENKEY()
+#=======================
+SSHD_CONFIG()
 {
-    SPACE_SIGNATURE="sshhostkeyfile:1"
-    SPACE_DEP="PRINT"               # shellcheck disable=SC2034
+    SPACE_SIGNATURE="configemplate"
+    SPACE_DEP="PRINT FILE_ROW_PERSIST"   # shellcheck disable=SC2034
+    SPACE_REDIR="<${1}"
 
-    local sshhostkeyfile="${1}"
+    # File contents are fed on STDIN thanks to SPACE_REDIR
+    # We don't need the filename.
+    #local configtemplate="${1}"
     shift
 
-    PRINT "Generate key as: ${sshhostkeyfile}."
+    # This works for root, who can access all user dirs.
+    local authorized_keys="%h/.ssh/authorized_keys"
+    if [ "$(id -u)" != "0" ]; then
+        # Set it to user space
+        authorized_keys="${HOME}/sshd_authorized_keys"
+        touch "${authorized_keys}"
+    fi
 
-    ssh-keygen -f "${sshhostkeyfile}"
+    PRINT "Authorized keys: ${authorized_keys}."
+    authorized_keys=$(printf "%s\\n" "${authorized_keys}" | sed 's/\//\\\//g')
+
+    local sshdconfig="${HOME}/sshd_config"
+
+    # Read from STDIN
+    if ! sed "s/AUTHORIZED_KEYS_DIR/${authorized_keys}/g" >"${sshdconfig}"; then
+        PRINT "Could not write to ${sshdconfig}" "error"
+        return 1
+    fi
+
+    local sshdhostkeyfile="${HOME}/sshd_host_key_file"
+
+    PRINT "Generate key as: ${sshdhostkeyfile}."
+    if ! ssh-keygen -f "${sshdhostkeyfile}"; then
+        PRINT "Could not generate key file" "error"
+        return 1
+    fi
 }
-
 
 # Disable warning about local keyword
 # shellcheck disable=SC2039
@@ -92,63 +114,20 @@ SSHD_GENKEY()
 SSHD_RUN()
 {
     # shellcheck disable=SC2034
-    SPACE_SIGNATURE="sshhostkeyfile:1 port:1 authorizedkeys:1 configemplate:1"
-    SPACE_ENV="CWD"         # shellcheck disable=SC2034
+    SPACE_SIGNATURE="port"
     SPACE_DEP="PRINT"       # shellcheck disable=SC2034
-
-    local sshhostkeyfile="${1}"
-    shift
 
     local port="${1}"
     shift
 
-    local authorizedkeys="${1}"
-    PRINT "Authorized keys: ${authorizedkeys}."
-    authorizedkeys=$(echo "$authorizedkeys" | sed 's/\//\\\//g')
-    shift
+    local sshdhostkeyfile="${HOME}/sshd_host_key_file"
+    local sshdconfig="${sshdhostkeyfile%/*}/sshd_config"
 
-    local configtemplate="${1}"
-    shift
-
-    local sshdconfig="${CWD}/sshd_config"
-
-    sed "s/AUTHORIZED_KEYS_DIR/${authorizedkeys}/g" "${configtemplate}" > "${sshdconfig}" || return 1
-
-    $(which sshd) -h "${sshhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
-}
-
-
-# Disable warning about local keyword
-# shellcheck disable=SC2039
-
-#=======================
-# SSHD_CONFIG
-#
-# Configure the SSHD of the OS so that authorized_keys file is used.
-#
-# Returns:
-#   0: success
-#   2: file does not exist
-#
-#=======================
-SSHD_CONFIG()
-{
-    SPACE_DEP="PRINT FILE_ROW_PERSIST"   # shellcheck disable=SC2034
-
-    local file="/etc/ssh/sshd_config"
-    local row="AuthorizedKeysFile %h\/.ssh\/authorized_keys"
-
-    PRINT "modify ${file}." "debug"
-
-    FILE_ROW_PERSIST "${row}" "${file}"
-    local status="$?"
-    if [ "${status}" -eq 2 ]; then
-        PRINT "File does not exist." "debug"
-        return 2
+    local sshdbinary=
+    if ! sshdbinary=$(which sshd); then
+        PRINT "sshd not present" "error"
+        return 1
     fi
 
-    # This is for port forwarding, which could be used with -g switch.
-    # But is insecure to just allow.
-    #row="GatewayPorts yes"
-    #FILE_ROW_PERSIST "${row}" "${file}"
+    ${sshdbinary} -h "${sshdhostkeyfile}" -D -p "${port}" -f "${sshdconfig}" "$@"
 }
