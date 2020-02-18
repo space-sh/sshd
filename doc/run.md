@@ -14,7 +14,7 @@ Run a local _SSHD_ server.
 
 First generate the server host key:  
 ```sh
-space -m sshd /genkey/
+space -m sshd /config/
 ```
 
 Default _SSHD_ server start:

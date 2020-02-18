@@ -7,7 +7,7 @@ weight: 200
 ---
 # SSH module: Configure SSH daemon
 
-Configures and makes sure that _SSHD_ is properly set up, in particular, enabling `authorized_keys` file.
+Generate a new server key, configures and makes sure that _SSHD_ is properly set up, in particular, enabling `authorized_keys` file.
 
 
 ## Example
