@@ -1,5 +1,12 @@
 # Space Module change log - sshd
 
+## [1.2.0 - 2020-02-18]
+
+* Simplify setup
+
+- Remove usage of `SUDO` environment variable from `SSHD_CONFIG`
+
+
 ## [1.1.1 - 2017-06-11]
 
 * Update documentation
