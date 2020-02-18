@@ -45,14 +45,9 @@ _tests:
             _env:
                 - sshhostkeyfile: /tmp/ssh_host_rsa_key
                 - SPACE_REDIR: "</dev/null"
-            @include: @{DIR}/../Spacefile.yaml|/genkey/
-            _info:
-                title: Test generating a new server key
-        -
-            _env:
             @include: @{DIR}/../Spacefile.yaml|/config/
             _info:
-                title: Configure sshd_config
+                title: Test generating a new server key and configuring
 
 _clean:
     _info:
