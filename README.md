@@ -5,15 +5,11 @@ Handles ssh daemon (server).
 
 
 ## /config/
-	Configure SSHD
+	Configure SSHD for user space
 
 	Make sure that SSHD is properly configured
 	to be using an authorized_keys file.
 	
-
-
-## /genkey/
-	Generate a server key
 
 
 ## /run/
@@ -38,17 +34,15 @@ Check dependencies for this module.
   
   
   
-## SSHD\_GENKEY()  
+## SSHD\_CONFIG()  
   
   
   
-Generate server key  
-  
-### Parameters:  
-- $1: host file  
+Configure the SSHD user config files  
   
 ### Returns:  
-- Non-zero on failure.  
+- 0: success  
+- 1: error  
   
   
   
@@ -66,18 +60,6 @@ Run ssh server
   
 ### Returns:  
 - Non-zero on failure.  
-  
-  
-  
-## SSHD\_CONFIG()  
-  
-  
-  
-Configure the SSHD of the OS so that authorized\_keys file is used.  
-  
-### Returns:  
-- 0: success  
-- 2: file does not exist  
   
   
   
