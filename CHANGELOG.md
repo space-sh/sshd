@@ -1,5 +1,10 @@
 # Space Module change log - sshd
 
+## [1.2.1 - 2020-02-24]
+
+* Update config documentation
+
+
 ## [1.2.0 - 2020-02-18]
 
 * Simplify setup
