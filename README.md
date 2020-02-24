@@ -1,4 +1,4 @@
-# SSHD module | [![build status](https://gitlab.com/space-sh/sshd/badges/master/build.svg)](https://gitlab.com/space-sh/sshd/commits/master)
+# SSHD module | [![build status](https://gitlab.com/space-sh/sshd/badges/master/pipeline.svg)](https://gitlab.com/space-sh/sshd/commits/master)
 
 Handles ssh daemon (server).
 
