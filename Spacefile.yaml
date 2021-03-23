@@ -14,10 +14,10 @@
 # limitations under the License.
 #
 ---
-@clone: ssh os file
-    @include: ssh|/_clone/
-    @include: os|/_clone/
-    @include: file|/_clone/
+@clone: ssh:2.0.0 os:1.3.3 file:1.6.0
+    @include: ssh:2.0.0|/_clone/
+    @include: os:1.3.3|/_clone/
+    @include: file:1.6.0|/_clone/
 @include: |/_clone/
 
 _info:
